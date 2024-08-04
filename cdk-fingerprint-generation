@@ -1,0 +1,44 @@
+package com.example;
+
+import org.apache.commons.io.filefilter.TrueFileFilter;
+import org.openscience.cdk.DefaultChemObjectBuilder;
+import org.openscience.cdk.exception.CDKException;
+import org.openscience.cdk.exception.CDKException;
+import org.openscience.cdk.fingerprint.PubchemFingerprinter;
+import org.openscience.cdk.interfaces.IAtomContainer;
+import org.openscience.cdk.interfaces.IChemObjectBuilder;
+import org.openscience.cdk.io.SMILESReader;
+import org.openscience.cdk.silent.SilentChemObjectBuilder;
+import org.openscience.cdk.smiles.SmilesParser;
+
+import java.util.BitSet;
+
+import java.io.StringReader;
+
+public class PubChemFingerprintExample {
+    public static void main(String[] args) throws CDKException {
+        IChemObjectBuilder builder = SilentChemObjectBuilder.getInstance();
+        SmilesParser smilesParser = new SmilesParser(builder);
+        // IAtomContainer molecule = smilesParser.parseSmiles("CC1=C(C2=C(C=C1)N=C(NC2=O)N)SC3=CC=NC=C3"); // nolatrexed
+        IAtomContainer molecule = smilesParser.parseSmiles("CC(=O)OC1=CC=CC=C1C(=O)O"); // aspirin
+
+        // note likely now optional:
+        // AtomContainerManipulator.percieveAtomTypesAndConfigureAtoms(mol);
+        // Aromaticity.cdkLegacy().apply(mol);
+        // AtomContainerManipulator.convertImplicitToExplicitHydrogens(mol);
+
+        PubchemFingerprinter fprinter = new PubchemFingerprinter(builder);
+        BitSet fingerprint = fprinter.getBitFingerprint(molecule).asBitSet();
+        System.out.println(fingerprint);
+
+        StringBuilder binaryString = new StringBuilder(fingerprint.length());
+        for (int i = 0; i < 881; i++) {
+            binaryString.append(fingerprint.get(i) ? '1' : '0');
+        }
+        
+        System.out.println("Binary Fingerprint: " + binaryString.toString());
+        System.out.println(fingerprint.length());
+        System.out.println(binaryString.toString().length());
+        System.out.println("Helloooooo!!!");
+    }
+}
