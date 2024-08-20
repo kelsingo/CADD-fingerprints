@@ -9,7 +9,7 @@ import mdtraj as md
 
 parser = argparse.ArgumentParser(description="Convert input file extension to output file extention by using mdtraj.")
 parser.add_argument('--input_file', '-i',
-                    default="1hp8.cif",
+                    default="trajectory.h5",
                     help='The input file. Default is trajectory.h5.')
 parser.add_argument('--output_file', '-o',
                     default='trajectory.dcd',
